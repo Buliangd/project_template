@@ -5,6 +5,7 @@ project(cjson
             DESCRIPTION "common components: cjson"
             LANGUAGES C)
 
+############      Product Code Build      ############
 # 动态库
 add_library(${PROJECT_NAME} SHARED)
 target_include_directories(${PROJECT_NAME}
@@ -45,4 +46,9 @@ if(DEFINED INC_OUTPUT_DIR)
     message(STATUS "set inc output dir: ${INC_OUTPUT_DIR}")
     # 暂时通过手动拷贝的方式 将对外头文件拷贝到指定目录下
     file(COPY ${PROJECT_SOURCE_DIR}/include/ DESTINATION ${INC_OUTPUT_DIR}/${PROJECT_NAME})
+endif()
+
+############      Test Code Build      ############
+if(BUILD_TESTING)
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
 endif()

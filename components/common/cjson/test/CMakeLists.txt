@@ -1,0 +1,37 @@
+# 检查测试框架路径是否传入
+## TODO 改成库形式或目标形式传入，减少编译时间
+set(TEST_FRAMEWORK_DIR "/home/buliangd/work/code/dev/test/cmake/Modern2/tools/googletest")
+message(STATUS "test_framework_dir: ${TEST_FRAMEWORK_DIR}")
+if(NOT IS_DIRECTORY ${TEST_FRAMEWORK_DIR})
+    message(FATAL_ERROR "can not find test_framework(gtest)")
+endif()
+
+# 添加测试框架
+add_subdirectory(${TEST_FRAMEWORK_DIR} ${TEST_FRAMEWORK_DIR}/build/gtest.out)
+
+# 生成测试程序
+
+set(TEST_EXEC "test_${PROJECT_NAME}")
+message(STATUS "test_exec: ${TEST_EXEC}")
+message(STATUS "PROJECT_NAME: ${PROJECT_NAME}")
+
+aux_source_directory(../src DIR_SRCS)
+aux_source_directory(. DIR_TEST_SRCS)
+add_executable(${TEST_EXEC}
+        ${DIR_SRCS}
+        ${DIR_TEST_SRCS}
+)
+target_link_libraries(
+        ${TEST_EXEC}
+        gtest gmock gtest_main
+)
+target_include_directories(
+        ${TEST_EXEC}
+        PRIVATE ../src
+        PUBLIC ../include
+)
+
+# ctest识别测试用例
+enable_testing()
+include(GoogleTest)
+gtest_discover_tests(${TEST_EXEC})
