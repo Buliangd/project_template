@@ -14,12 +14,12 @@
 #include <stdio.h>
 #include "cjson.h"
 #include "cli.h"
-#include "upg_internel.h"
+#include "upg_internal.h"
 #include "upg.h"
 
 int32_t upg_print_version(void)
 {
-    printf("upg version: %s\n", upg_VERSION);
+    printf("upg version: %s\n", UPG_VERSION);
     printf("upg call cli version: ");
     cli_print_version();
     printf("upg call cjson version: ");

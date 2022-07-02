@@ -5,8 +5,10 @@ project(cli
             DESCRIPTION "common components: cli")
 
 # 依赖模块
-set(CJSON_DEPEND_DIR "/home/buliangd/work/code/dev/test/cmake/Modern2/components/common/cjson")
-add_subdirectory(${CJSON_DEPEND_DIR} ${CJSON_DEPEND_DIR}/build/.out)
+if(NOT DEFINED CJSON_DEPEND_DIR)
+    set( "/home/buliangd/work/code/dev/test/cmake/Modern2/components/common/cjson")
+    add_subdirectory(${CJSON_DEPEND_DIR} ${CJSON_DEPEND_DIR}/build)
+endif()
 
 ############      Product Code Build      ############
 # 动态库
