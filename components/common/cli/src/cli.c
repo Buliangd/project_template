@@ -12,7 +12,8 @@
  * @warning  
  */
 #include <stdio.h>
-#include "cli_internel.h"
+#include "cjson.h"
+#include "cli_internal.h"
 #include "cli.h"
 
 int32_t cli_print_version(void)

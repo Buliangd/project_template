@@ -12,12 +12,12 @@
  * @warning  
  */
 
-#ifndef __MODERN2_CLI_INTERNEL_H
-#define __MODERN2_CLI_INTERNEL_H
+#ifndef __MODERN2_CLI_INTERNAL_H
+#define __MODERN2_CLI_INTERNAL_H
 
 #ifdef CPLUSPLUS
 extern "C" {
-#endi
+#endif
 
 #define CLI_VERSION ("V0.0.1")
 
@@ -25,4 +25,4 @@ extern "C" {
 }
 #endif
 
-#endif /* __MODERN2_CLI_INTERNEL_H */
+#endif /* __MODERN2_CLI_INTERNAL_H */

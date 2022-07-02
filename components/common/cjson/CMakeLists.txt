@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.11...3.21)
 
 project(cjson 
             VERSION 1.0
-            DESCRIPTION "common components: cjson"
-            LANGUAGES C)
+            DESCRIPTION "common components: cjson")
 
 ############      Product Code Build      ############
 # 动态库

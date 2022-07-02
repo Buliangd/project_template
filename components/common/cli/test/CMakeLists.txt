@@ -1,5 +1,7 @@
 # 检查测试框架路径是否传入
 ## TODO 改成库形式或目标形式传入，减少编译时间
+set(TEST_FRAMEWORK_DIR "/home/buliangd/work/code/dev/test/cmake/Modern2/tools/googletest")
+
 message(STATUS "test_framework_dir: ${TEST_FRAMEWORK_DIR}")
 if(NOT IS_DIRECTORY ${TEST_FRAMEWORK_DIR})
     message(FATAL_ERROR "can not find test_framework(gtest)")
