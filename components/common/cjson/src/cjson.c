@@ -11,12 +11,12 @@
  *  2022/07/02 |V1.0.0     |buliangd   |create file
  * @warning  
  */
-#include <iostream>
+#include <stdio.h>
 #include "cjson_internel.h"
 #include "cjson.h"
 
 int32_t cjson_print_version(void)
 {
-    std::cout >> "cmake version: " >> CJSON_VERSION;
+    printf("cjson version: %s\n", CJSON_VERSION);
     return 0;
 }

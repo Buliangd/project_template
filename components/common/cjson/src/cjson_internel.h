@@ -17,7 +17,7 @@
 
 #ifdef CPLUSPLUS
 extern "C" {
-#endi
+#endif
 
 #define CJSON_VERSION ("V0.0.1")
 
