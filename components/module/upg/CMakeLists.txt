@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11...3.21)
 
 project(upg 
             VERSION 1.0
-            DESCRIPTION "common components: upg")
+            DESCRIPTION "module components: upg")
 
 # 依赖模块
 if(NOT DEFINED CJSON_DEPEND_DIR)
