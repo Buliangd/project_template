@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 3.11...3.21)
 
-project(cjson 
-            VERSION 1.0
+project(cjson
+            VERSION 0.0.1
             DESCRIPTION "common components: cjson")
 
 enable_testing()
 
+set(CUSTOM_DEFINE_FILE "/home/buliangd/work/code/dev/test/cmake/Modern2/rules/custom_define.cmake"
+                    CACHE FILEPATH "default custom define file")
+include(${CUSTOM_DEFINE_FILE})
+default_custom_define()
 
 ############      Product Code Build      ############
 # 动态库
