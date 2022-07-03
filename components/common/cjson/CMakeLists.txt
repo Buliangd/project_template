@@ -4,12 +4,18 @@ project(cjson
             VERSION 0.0.1
             DESCRIPTION "common components: cjson")
 
-enable_testing()
-
+# 导入用户变量默认配置
 set(CUSTOM_DEFINE_FILE "/home/buliangd/work/code/dev/test/cmake/Modern2/rules/custom_define.cmake"
                     CACHE FILEPATH "default custom define file")
 include(${CUSTOM_DEFINE_FILE})
 default_custom_define()
+
+# 导入函数
+include(${CUSTOM_UTIL_FUNCTION_FILE})
+
+# 使能ctest测试框架
+enable_testing()
+
 
 ############      Product Code Build      ############
 # 动态库
@@ -36,28 +42,20 @@ set_target_properties(${PROJECT_NAME} ${PROJECT_NAME}_a
         SOURCES ${DIR_SRCS}
 )
 
-# 输出生成物
-if(DEFINED LIB_OUTPUT_DIR)
-    message(STATUS "set lib output dir: ${LIB_OUTPUT_DIR}")
+# 输出生成物（库文件+头文件）
+if(${CUSTOM_OUTPUT_RESULTS})
     set_target_properties(${PROJECT_NAME} ${PROJECT_NAME}_a
-            PROPERTIES
-            ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_DIR}"
-            LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_DIR}"
-            RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_DIR}"
-            )
-endif()
-
-# 输出对外头文件
-if(DEFINED INC_OUTPUT_DIR)
-    message(STATUS "set inc output dir: ${INC_OUTPUT_DIR}")
-    # 暂时通过手动拷贝的方式 将对外头文件拷贝到指定目录下
-    file(COPY ${PROJECT_SOURCE_DIR}/include/ DESTINATION ${INC_OUTPUT_DIR}/${PROJECT_NAME})
+        PROPERTIES
+            ARCHIVE_OUTPUT_DIRECTORY "${CUSTOM_STATIC_LIB_DIR}"
+            LIBRARY_OUTPUT_DIRECTORY "${CUSTOM_SHARED_LIB_DIR}"
+            RUNTIME_OUTPUT_DIRECTORY "${CUSTOM_SHARED_LIB_DIR}"
+    )
+    file(COPY ${PROJECT_SOURCE_DIR}/include/ DESTINATION ${CUSTOM_INCLUDE_DIR}/${PROJECT_NAME})
 endif()
 
 ############      Test Code Build      ############
-# if((FORCE_TESTING) OR 
-#         ((BUILD_TESTING) AND (${PROJECT_NAME} IN_LIST ${TEST_COMPONENTS_LIST})))
-if((FORCE_TESTING) OR 
-        ((BUILD_TESTING) AND (${PROJECT_NAME} IN_LIST TEST_COMPONENTS_LIST)))
+if((CUSTOM_FORCE_ALL_TESTING) 
+    OR ((BUILD_TESTING) 
+        AND (${PROJECT_NAME} IN_LIST CUSTOM_TEST_COMPONENTS_LIST)))
     add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
 endif()

@@ -1,25 +1,18 @@
 # 检查测试框架路径是否传入
-## TODO 改成库形式或目标形式传入，减少编译时间
-message(STATUS "test_framework_dir: ${TEST_FRAMEWORK_DIR}")
-if(NOT IS_DIRECTORY ${TEST_FRAMEWORK_DIR})
-    message(STATUS "test_framework_dir: ${TEST_FRAMEWORK_DIR}")
-    message(FATAL_ERROR "can not find test_framework(gtest)")
+if(NOT IS_DIRECTORY ${CUSTOM_GTEST_SOURCE_DIR})
+    message(FATAL_ERROR "can not find gtest source dir or is not directory: ${CUSTOM_GTEST_SOURCE_DIR}")
 endif()
 
 # 添加测试框架
 # find_package(GTest)
 if (NOT DEFINED GTEST_INCLUDED)
     message(STATUS "include googletest")
-    add_subdirectory(${TEST_FRAMEWORK_DIR} ${CMAKE_BINARY_DIR}/testwork)
+    add_subdirectory(${CUSTOM_GTEST_SOURCE_DIR} ${CMAKE_BINARY_DIR}/testwork)
     set(GTEST_INCLUDED ON CACHE BOOL "chain include gtest flag" FORCE)
 endif()
 
 # 生成测试程序
-
 set(TEST_EXEC "test_${PROJECT_NAME}")
-message(STATUS "test_exec: ${TEST_EXEC}")
-message(STATUS "PROJECT_NAME: ${PROJECT_NAME}")
-
 aux_source_directory(../src DIR_PRODUCT_SRCS)
 aux_source_directory(. DIR_TEST_SRCS)
 add_executable(${TEST_EXEC}
@@ -36,9 +29,6 @@ target_include_directories(
         PUBLIC ../include
 )
 
-
-# ctest识别测试用例
-# add_test(NAME ${TEST_EXEC} COMMAND ${TEST_EXEC})
-# googletest已经安装到系统中
+# 注册测试程序至ctest中
 include(${CMAKE_ROOT}/Modules/GoogleTest.cmake)
 gtest_discover_tests(${TEST_EXEC})
