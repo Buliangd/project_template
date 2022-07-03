@@ -5,13 +5,15 @@ project(upg
             DESCRIPTION "module components: upg")
 
 # 依赖模块
-if(NOT DEFINED CJSON_DEPEND_DIR)
+if(NOT DEFINED CJSON_INCLUDED)
     set(CJSON_DEPEND_DIR "/home/buliangd/work/code/dev/test/cmake/Modern2/components/common/cjson")
-    add_subdirectory(${CJSON_DEPEND_DIR} ${CJSON_DEPEND_DIR}/build)
+    add_subdirectory(${CJSON_DEPEND_DIR} ${CMAKE_BINARY_DIR}/depend/cjson)
+    set(CJSON_INCLUDED ON)
 endif()
-if(NOT DEFINED CLI_DEPEND_DIR)
+if(NOT DEFINED CLI_INCLUDED)
     set(CLI_DEPEND_DIR "/home/buliangd/work/code/dev/test/cmake/Modern2/components/common/cli")
-    add_subdirectory(${CLI_DEPEND_DIR} ${CLI_DEPEND_DIR}/build)
+    add_subdirectory(${CLI_DEPEND_DIR} ${CMAKE_BINARY_DIR}/depend/cli)
+    set(CLI_INCLUDED ON)
 endif()
 
 ############      Product Code Build      ############

@@ -5,9 +5,10 @@ project(cli
             DESCRIPTION "common components: cli")
 
 # 依赖模块
-if(NOT DEFINED CJSON_DEPEND_DIR)
-    set( "/home/buliangd/work/code/dev/test/cmake/Modern2/components/common/cjson")
-    add_subdirectory(${CJSON_DEPEND_DIR} ${CJSON_DEPEND_DIR}/build)
+if(NOT DEFINED CJSON_INCLUDED)
+    set(CJSON_DEPEND_DIR "/home/buliangd/work/code/dev/test/cmake/Modern2/components/common/cjson")
+    add_subdirectory(${CJSON_DEPEND_DIR} ${CMAKE_BINARY_DIR}/depend/cjson)
+    set(CJSON_INCLUDED ON)
 endif()
 
 ############      Product Code Build      ############
@@ -31,6 +32,7 @@ target_include_directories(${PROJECT_NAME}_a
 )
 target_link_libraries(${PROJECT_NAME}_a cjson_a)
 
+# 源码
 aux_source_directory(./src DIR_SRCS)
 set_target_properties(${PROJECT_NAME} ${PROJECT_NAME}_a
     PROPERTIES 
