@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11...3.21)
 
 project(cli
             VERSION 0.0.1
-            DESCRIPTION "common components: cjson")
+            DESCRIPTION "common components: cli")
 
 # 导入用户变量默认配置
 set(CUSTOM_DEFINE_FILE "/home/buliangd/work/code/dev/test/cmake/Modern2/rules/custom_define.cmake"
@@ -15,8 +15,6 @@ include(${CUSTOM_UTIL_FUNCTION_FILE})
 
 # 使能ctest测试框架
 enable_testing()
-
-
 
 
 ############      Product Code Build      ############
