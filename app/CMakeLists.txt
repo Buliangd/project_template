@@ -4,6 +4,8 @@ project(app
             VERSION 1.0
             DESCRIPTION "top business entry")
 
+enable_testing()
+
 # 依赖模块
 if(NOT DEFINED CJSON_INCLUDED)
     set(CJSON_DEPEND_DIR "/home/buliangd/work/code/dev/test/cmake/Modern2/components/common/cjson")

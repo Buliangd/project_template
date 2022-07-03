@@ -4,6 +4,9 @@ project(cjson
             VERSION 1.0
             DESCRIPTION "common components: cjson")
 
+enable_testing()
+
+
 ############      Product Code Build      ############
 # 动态库
 add_library(${PROJECT_NAME} SHARED)
@@ -52,6 +55,5 @@ endif()
 #         ((BUILD_TESTING) AND (${PROJECT_NAME} IN_LIST ${TEST_COMPONENTS_LIST})))
 if((FORCE_TESTING) OR 
         ((BUILD_TESTING) AND (${PROJECT_NAME} IN_LIST TEST_COMPONENTS_LIST)))
-    enable_testing()
     add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
 endif()

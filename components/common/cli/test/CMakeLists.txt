@@ -8,7 +8,11 @@ if(NOT IS_DIRECTORY ${TEST_FRAMEWORK_DIR})
 endif()
 
 # 添加测试框架
-add_subdirectory(${TEST_FRAMEWORK_DIR} ${TEST_FRAMEWORK_DIR}/build/gtest.out)
+if (NOT DEFINED GTEST_INCLUDED)
+    message(STATUS "include googletest")
+    add_subdirectory(${TEST_FRAMEWORK_DIR} ${CMAKE_BINARY_DIR}/testwork)
+    set(GTEST_INCLUDED ON CACHE BOOL "chain include gtest flag" FORCE)
+endif()
 
 # 生成测试程序
 
@@ -24,7 +28,7 @@ add_executable(${TEST_EXEC}
 )
 target_link_libraries(
         ${TEST_EXEC}
-        gtest gmock gtest_main
+        gtest gmock gtest_main cjson
 )
 target_include_directories(
         ${TEST_EXEC}
@@ -34,5 +38,5 @@ target_include_directories(
 
 # ctest识别测试用例
 enable_testing()
-include(GoogleTest)
+include(${CMAKE_ROOT}/Modules/GoogleTest.cmake)
 gtest_discover_tests(${TEST_EXEC})
