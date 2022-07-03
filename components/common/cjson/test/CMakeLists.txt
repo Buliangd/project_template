@@ -7,7 +7,7 @@ endif()
 # find_package(GTest)
 if (NOT DEFINED GTEST_INCLUDED)
     message(STATUS "include googletest")
-    add_subdirectory(${CUSTOM_GTEST_SOURCE_DIR} ${CMAKE_BINARY_DIR}/testwork)
+    add_subdirectory(${CUSTOM_GTEST_SOURCE_DIR} ${CUSTOM_GTEST_SOURCE_DIR}/build/testwork)
     set(GTEST_INCLUDED ON CACHE BOOL "chain include gtest flag" FORCE)
 endif()
 
