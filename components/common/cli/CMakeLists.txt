@@ -1,17 +1,46 @@
 cmake_minimum_required(VERSION 3.11...3.21)
 
-project(cli 
-            VERSION 1.0
-            DESCRIPTION "common components: cli")
+project(cli
+            VERSION 0.0.1
+            DESCRIPTION "common components: cjson")
 
-# 依赖模块
-if(NOT DEFINED CJSON_INCLUDED)
-    set(CJSON_DEPEND_DIR "/home/buliangd/work/code/dev/test/cmake/Modern2/components/common/cjson")
-    add_subdirectory(${CJSON_DEPEND_DIR} ${CMAKE_BINARY_DIR}/depend/cjson)
-    set(CJSON_INCLUDED ON)
-endif()
+# 导入用户变量默认配置
+set(CUSTOM_DEFINE_FILE "/home/buliangd/work/code/dev/test/cmake/Modern2/rules/custom_define.cmake"
+                    CACHE FILEPATH "default custom define file")
+include(${CUSTOM_DEFINE_FILE})
+default_custom_define()
+
+# 导入函数
+include(${CUSTOM_UTIL_FUNCTION_FILE})
+
+# 使能ctest测试框架
+enable_testing()
+
+
+
 
 ############      Product Code Build      ############
+set(${PROJECT_NAME}_DEPEND_COMMON_COMPONENTS "cjson")
+# set(${PROJECT_NAME}_DEPEND_MODULE_COMPONENTS "")
+# set(${PROJECT_NAME}_DEPEND_BUSINESS_COMPONENTS "")
+set(${PROJECT_NAME}_DEPEND_COMPONENTS 
+        ${${PROJECT_NAME}_DEPEND_COMMON_COMPONENTS}
+        # ${${PROJECT_NAME}_DEPEND_MODULE_COMPONENTS}
+        # ${${PROJECT_NAME}_DEPEND_BUSINESS_COMPONENTS}
+)
+# 链接依赖组件
+FOREACH(single ${${PROJECT_NAME}_DEPEND_COMMON_COMPONENTS})
+    custom_add_component(${single} common)
+ENDFOREACH()
+# FOREACH(single ${${PROJECT_NAME}_DEPEND_MODULE_COMPONENTS})
+#     custom_add_component(${single} module)
+# ENDFOREACH()
+# FOREACH(single ${${PROJECT_NAME}_DEPEND_BUSINESS_COMPONENTS})
+#     custom_add_component(${single} business)
+# ENDFOREACH()
+
+list(TRANSFORM ${PROJECT_NAME}_DEPEND_COMPONENTS APPEND _a OUTPUT_VARIABLE ${PROJECT_NAME}_DEPEND_COMPONENTS_A)
+
 # 动态库
 add_library(${PROJECT_NAME} SHARED)
 target_include_directories(${PROJECT_NAME}
@@ -20,7 +49,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/src
 )
-target_link_libraries(${PROJECT_NAME} cjson)
+target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_DEPEND_COMPONENTS})
 
 # 静态库
 add_library(${PROJECT_NAME}_a STATIC)
@@ -30,35 +59,28 @@ target_include_directories(${PROJECT_NAME}_a
     PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/src
 )
-target_link_libraries(${PROJECT_NAME}_a cjson_a)
+target_link_libraries(${PROJECT_NAME}_a ${${PROJECT_NAME}_DEPEND_COMPONENTS_A})
 
-# 源码
 aux_source_directory(./src DIR_SRCS)
 set_target_properties(${PROJECT_NAME} ${PROJECT_NAME}_a
     PROPERTIES 
         SOURCES ${DIR_SRCS}
 )
 
-# 输出生成物
-if(DEFINED LIB_OUTPUT_DIR)
-    message(STATUS "set lib output dir: ${LIB_OUTPUT_DIR}")
+# 输出生成物（库文件+头文件）
+if(${CUSTOM_OUTPUT_RESULTS})
     set_target_properties(${PROJECT_NAME} ${PROJECT_NAME}_a
-            PROPERTIES
-            ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_DIR}"
-            LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_DIR}"
-            RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_DIR}"
-            )
-endif()
-
-# 输出对外头文件
-if(DEFINED INC_OUTPUT_DIR)
-    message(STATUS "set inc output dir: ${INC_OUTPUT_DIR}")
-    # 暂时通过手动拷贝的方式 将对外头文件拷贝到指定目录下
-    file(COPY ${PROJECT_SOURCE_DIR}/include/ DESTINATION ${INC_OUTPUT_DIR}/${PROJECT_NAME})
+        PROPERTIES
+            ARCHIVE_OUTPUT_DIRECTORY "${CUSTOM_STATIC_LIB_DIR}"
+            LIBRARY_OUTPUT_DIRECTORY "${CUSTOM_SHARED_LIB_DIR}"
+            RUNTIME_OUTPUT_DIRECTORY "${CUSTOM_SHARED_LIB_DIR}"
+    )
+    file(COPY ${PROJECT_SOURCE_DIR}/include/ DESTINATION ${CUSTOM_INCLUDE_DIR}/${PROJECT_NAME})
 endif()
 
 ############      Test Code Build      ############
-if((FORCE_TESTING) OR 
-        ((BUILD_TESTING) AND (${PROJECT_NAME} IN_LIST TEST_COMPONENTS_LIST)))
+if((CUSTOM_FORCE_ALL_TESTING) 
+    OR ((BUILD_TESTING) 
+        AND (${PROJECT_NAME} IN_LIST CUSTOM_TEST_COMPONENTS_LIST)))
     add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
 endif()
