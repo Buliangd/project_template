@@ -22,7 +22,7 @@ add_executable(${TEST_EXEC}
 )
 target_link_libraries(
         ${TEST_EXEC}
-        gtest gmock gtest_main
+        gtest gtest_main
 )
 target_include_directories(
         ${TEST_EXEC}
@@ -31,6 +31,6 @@ target_include_directories(
 )
 
 # ctest识别测试用例
-enable_testing()
-include(GoogleTest)
-gtest_discover_tests(${TEST_EXEC})
+add_test(NAME ${TEST_EXEC} COMMAND ${TEST_EXEC})
+# include(GoogleTest)
+# gtest_discover_tests(${TEST_EXEC})

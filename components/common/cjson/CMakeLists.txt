@@ -48,6 +48,10 @@ if(DEFINED INC_OUTPUT_DIR)
 endif()
 
 ############      Test Code Build      ############
-if(BUILD_TESTING)
+# if((FORCE_TESTING) OR 
+#         ((BUILD_TESTING) AND (${PROJECT_NAME} IN_LIST ${TEST_COMPONENTS_LIST})))
+if((FORCE_TESTING) OR 
+        ((BUILD_TESTING) AND (${PROJECT_NAME} IN_LIST TEST_COMPONENTS_LIST)))
+    enable_testing()
     add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
 endif()
